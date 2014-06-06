@@ -81,8 +81,8 @@ List supplies in stock (a view for this isn't needed).
 SELECT * FROM supplies;
 
 /*
-List animal daily needs including which employees are responsible for each.
-need
+List animal daily needs including which employees are responsible for each
+need.
 */
 SELECT shift_name
      , zone_name
