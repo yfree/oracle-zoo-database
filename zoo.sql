@@ -965,35 +965,45 @@ VALUES (4, 3, 4, 2);
   * stored procedures * 
   *********************/
 
--- Update supplies by subtracting total daily needs
--- Raises an error if daily needs exceed supply for any item
+/* Update supplies by subtracting total daily needs from current inventory
+   Will not update if daily needs exceed supply for any item
+*/
 CREATE OR REPLACE PROCEDURE update_sup 
 IS
-    CURSOR daily_sup_exceed_cur
+
+insuffic_stock EXCEPTION;
+insuffic_stock_msg VARCHAR2(512) DEFAULT 'insufficient stock';
+
+    CURSOR sup_exceed_cursor
     IS
         SELECT supply FROM daily_sup_exc_v;
     
-    sup_exceed_check daily_sup_exceed_cur%ROWTYPE;
+    sup_exceed_row sup_exceed_cursor%ROWTYPE;
     
-    CURSOR daily_sup_req_cur
+    CURSOR daily_sup_cursor
     IS
         SELECT sup_id
              , amount_required
         FROM daily_sup_req_v;  
+    
+    daily_sup_row daily_sup_cursor%ROWTYPE;
         
 BEGIN
-    OPEN daily_sup_exceed_cur;
-    FETCH daily_sup_exceed_cur INTO sup_exceed_check;
-    IF daily_sup_exceed_cur%NOTFOUND THEN
-        FOR sup_amount_rec 
-        IN daily_sup_req_cur
-        LOOP
-            UPDATE supplies
-            SET total_amount = total_amount - sup_amount_rec.amount_required
-            WHERE sup_id = sup_amount_rec.sup_id;
-        END LOOP;
-    ELSE
-        RAISE_APPLICATION_ERROR (-20002, 'insufficient stock');
+    OPEN sup_exceed_cursor;
+    FETCH sup_exceed_cursor INTO sup_exceed_row;
+    IF sup_exceed_cursor%FOUND THEN
+        RAISE insuffic_stock;
     END IF;
+        
+    FOR daily_sup_row IN daily_sup_cursor
+    LOOP
+        UPDATE supplies
+        SET total_amount = total_amount - daily_sup_row.amount_required
+        WHERE sup_id = daily_sup_row.sup_id;
+    END LOOP;
+    
+EXCEPTION
+    WHEN insuffic_stock THEN
+        dbms_output.put_line(insuffic_stock_msg);
 END;
 /
