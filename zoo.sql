@@ -3,7 +3,7 @@
  **********/
      
 CREATE TABLE shifts
-    ( shift_id      INTEGER
+    ( shift_id      NUMBER(8,0)
     , shift_name    VARCHAR2(50)
         CONSTRAINT    shift_shift_name_nn NOT NULL
     , CONSTRAINT    shift_shift_id_pk
@@ -11,7 +11,7 @@ CREATE TABLE shifts
     );
 
 CREATE TABLE zones
-    ( zone_id       INTEGER
+    ( zone_id       NUMBER(8,0)
     , zone_name     VARCHAR2(50)
         CONSTRAINT    zone_zone_name_nn NOT NULL
     , CONSTRAINT    zone_zone_id_pk
@@ -19,7 +19,7 @@ CREATE TABLE zones
     );
 
 CREATE TABLE resp_types
-    ( resp_type_id       INTEGER
+    ( resp_type_id       NUMBER(2,0)
     , resp_type_name     VARCHAR2(50)
         CONSTRAINT    resp_type_resp_type_name_nn NOT NULL
     , CONSTRAINT    resp_type_resp_type_id_pk 
@@ -27,14 +27,14 @@ CREATE TABLE resp_types
     );
 
 CREATE TABLE employees
-    ( emp_id        INTEGER
+    ( emp_id        NUMBER(8,0)
     , first_name    VARCHAR2(50)
         CONSTRAINT    emp_first_name_nn NOT NULL
     , last_name     VARCHAR2(50)
         CONSTRAINT    emp_last_name_nn NOT NULL
-    , emp_type      INTEGER
+    , emp_type      NUMBER(2,0)
         CONSTRAINT    emp_emp_type_nn NOT NULL
-    , manager_id    INTEGER
+    , manager_id    NUMBER(8,0)
     , CONSTRAINT    emp_emp_id_pk 
                       PRIMARY KEY (emp_id)
     , CONSTRAINT    emp_emp_type_fk
@@ -46,7 +46,7 @@ CREATE TABLE employees
     );
 
 CREATE TABLE emp_phones
-    ( emp_id        INTEGER
+    ( emp_id        NUMBER(8,0)
     , phone_no      VARCHAR2(16)
     , CONSTRAINT    emp_phone_pk 
                       PRIMARY KEY (emp_id, phone_no)
@@ -56,22 +56,22 @@ CREATE TABLE emp_phones
     );
 
 CREATE TABLE supplies
-    ( sup_id        INTEGER
+    ( sup_id        NUMBER(8,0)
     , sup_name      VARCHAR2(50)
         CONSTRAINT    sup_sup_name_nn NOT NULL
     , sup_unit      VARCHAR2(10)
         CONSTRAINT    sup_sup_unit_nn NOT NULL
     , total_amount  NUMBER(15,2)
         CONSTRAINT    sup_total_amount_nn NOT NULL
-    , sup_type      INTEGER
+    , sup_type      NUMBER(8,0)
         CONSTRAINT    sup_sup_type_nn NOT NULL
     , admin_route   VARCHAR2(2)
     , CONSTRAINT    sup_sup_unit_chk
-                      CHECK (sup_unit in('lb','mg','kg','ml'))
+                      CHECK (sup_unit IN('lb','mg','kg','ml'))
     , CONSTRAINT    sup_sup_total_amount_min
                       CHECK (total_amount >= 0)
     , CONSTRAINT    sup_admin_route_chk
-                      CHECK (admin_route in('iv','iv','o'))
+                      CHECK (admin_route IN('iv','iv','o'))
     , CONSTRAINT    sup_sup_id_pk
                       PRIMARY KEY (sup_id)
     , CONSTRAINT    sup_sup_type_fk
@@ -80,10 +80,10 @@ CREATE TABLE supplies
     );
 
 CREATE TABLE anim_categories
-    ( cat_id        INTEGER
+    ( cat_id        NUMBER(8,0)
     , cat_name      VARCHAR2(50)
         CONSTRAINT    anim_cat_cat_name_nn NOT NULL
-    , zone_id       INTEGER
+    , zone_id       NUMBER(8,0)
         CONSTRAINT    anim_cat_zone_id_nn NOT NULL
     , CONSTRAINT    anim_cat_cat_id_pk
                       PRIMARY KEY (cat_id)
@@ -93,16 +93,16 @@ CREATE TABLE anim_categories
     );
 
 CREATE TABLE animals
-    ( anim_id       INTEGER
+    ( anim_id       NUMBER(8,0)
     , anim_name     VARCHAR2(50)
         CONSTRAINT   anim_anim_name_nn NOT NULL
-    , cat_id        INTEGER
+    , cat_id        NUMBER(8,0)
         CONSTRAINT   anim_cat_id_nn NOT NULL
-    , gender        VARCHAR2(1)
+    , gender        CHAR(1)
     , anim_dob      DATE
         CONSTRAINT   anim_dob_nn NOT NULL
     , CONSTRAINT    anim_gender_chk
-                      CHECK (gender in('f','m'))
+                      CHECK (gender IN('f','m'))
     , CONSTRAINT    anim_anim_id_pk
                       PRIMARY KEY (anim_id)
     , CONSTRAINT    anim_cat_id_fk 
@@ -111,14 +111,14 @@ CREATE TABLE animals
     );
 
 CREATE TABLE anim_needs
-    ( need_id       INTEGER
-    , anim_id       INTEGER
+    ( need_id       NUMBER(8,0)
+    , anim_id       NUMBER(8,0)
         CONSTRAINT    anim_need_anim_id_nn NOT NULL
-    , sup_id        INTEGER
+    , sup_id        NUMBER(8,0)
         CONSTRAINT    anim_need_sup_id_nn NOT NULL
     , sup_amount    NUMBER(15,2)
         CONSTRAINT    anim_need_sup_amount_nn NOT NULL
-    , shift_id      INTEGER
+    , shift_id      NUMBER(8,0)
         CONSTRAINT   anim_need_shift_id_nn NOT NULL
     , anim_need_note VARCHAR2(4000)
     , CONSTRAINT    anim_need_sup_amount_min
@@ -137,12 +137,12 @@ CREATE TABLE anim_needs
     );
 
 CREATE TABLE medical_tickets
-    ( med_tick_id    INTEGER
-    , anim_id        INTEGER
+    ( med_tick_id    NUMBER(8,0)
+    , anim_id        NUMBER(8,0)
         CONSTRAINT     med_tick_anim_id_nn NOT NULL
-    , open_emp       INTEGER
+    , open_emp       NUMBER(8,0)
         CONSTRAINT     med_tick_open_emp_nn NOT NULL
-    , close_emp      INTEGER
+    , close_emp      NUMBER(8,0)
     , open_date      DATE
         CONSTRAINT     med_tick_open_date_nn NOT NULL
     , close_date     DATE
@@ -164,14 +164,14 @@ CREATE TABLE medical_tickets
     );
    
 CREATE TABLE responsibilities
-    ( resp_id       INTEGER
-    , emp_id        INTEGER
+    ( resp_id       NUMBER(8,0)
+    , emp_id        NUMBER(8,0)
         CONSTRAINT    resp_emp_id_nn NOT NULL
-    , shift_id      INTEGER
+    , shift_id      NUMBER(8,0)
         CONSTRAINT    resp_shift_id_nn NOT NULL
-    , zone_id       INTEGER
+    , zone_id       NUMBER(8,0)
         CONSTRAINT    resp_zone_id_nn NOT NULL
-    , resp_type     INTEGER
+    , resp_type     NUMBER(8,0)
        CONSTRAINT     resp_resp_type_nn NOT NULL
     , CONSTRAINT    resp_resp_id_pk
                       PRIMARY KEY (resp_id)
@@ -255,7 +255,7 @@ BEFORE INSERT
     ON shifts
     FOR EACH ROW
 BEGIN
-    select shift_seq.nextval 
+    SELECT shift_seq.nextval 
     into :NEW.shift_id 
     from dual;
 END;
@@ -266,7 +266,7 @@ BEFORE INSERT
     ON zones
     FOR EACH ROW
 BEGIN
-    select zone_seq.nextval 
+    SELECT zone_seq.nextval 
     into :NEW.zone_id 
     from dual;
 END;
@@ -277,9 +277,9 @@ BEFORE INSERT
     ON resp_types
     FOR EACH ROW
 BEGIN
-    select resp_type_seq.nextval 
-    into :NEW.resp_type_id 
-    from dual;
+    SELECT resp_type_seq.nextval 
+    INTO :NEW.resp_type_id 
+    FROM dual;
 END;
 /
 
@@ -288,9 +288,9 @@ BEFORE INSERT
     ON employees
     FOR EACH ROW
 BEGIN
-    select emp_seq.nextval 
-    into :NEW.emp_id 
-    from dual;
+    SELECT emp_seq.nextval 
+    INTO :NEW.emp_id 
+    FROM dual;
 END;
 /
 
@@ -299,9 +299,9 @@ BEFORE INSERT
     ON supplies
     FOR EACH ROW
 BEGIN
-    select sup_seq.nextval 
-    into :NEW.sup_id 
-    from dual;
+    SELECT sup_seq.nextval 
+    INTO :NEW.sup_id 
+    FROM dual;
 END;
 /
 
@@ -310,9 +310,9 @@ BEFORE INSERT
     ON anim_categories
     FOR EACH ROW
 BEGIN
-    select anim_cat_seq.nextval 
-    into :NEW.cat_id 
-    from dual;
+    SELECT anim_cat_seq.nextval 
+    INTO :NEW.cat_id 
+    FROM dual;
 END;
 /
 
@@ -321,9 +321,9 @@ BEFORE INSERT
     ON animals
     FOR EACH ROW
 BEGIN
-    select anim_seq.nextval 
-    into :NEW.anim_id 
-    from dual;
+    SELECT anim_seq.nextval 
+    INTO :NEW.anim_id 
+    FROM dual;
 END;
 /
 
@@ -332,9 +332,9 @@ BEFORE INSERT
     ON anim_needs
     FOR EACH ROW
 BEGIN
-    select anim_need_seq.nextval 
-    into :NEW.need_id 
-    from dual;
+    SELECT anim_need_seq.nextval 
+    INTO :NEW.need_id 
+    FROM dual;
 END;
 /
 
@@ -343,9 +343,9 @@ BEFORE INSERT
     ON medical_tickets
     FOR EACH ROW
 BEGIN
-    select med_tick_seq.nextval 
-    into :NEW.med_tick_id 
-    from dual;
+    SELECT med_tick_seq.nextval 
+    INTO :NEW.med_tick_id 
+    FROM dual;
 END;
 /
 
@@ -354,9 +354,9 @@ BEFORE INSERT
     ON responsibilities
     FOR EACH ROW
 BEGIN
-    select resp_seq.nextval 
-    into :NEW.resp_id 
-    from dual;
+    SELECT resp_seq.nextval 
+    INTO :NEW.resp_id 
+    FROM dual;
 END;
 /
 
@@ -446,7 +446,7 @@ AFTER INSERT OR UPDATE OF close_emp
     ON medical_tickets
     FOR EACH ROW
 DECLARE 
-  emp_type_check INTEGER;
+  emp_type_check employees.emp_type%TYPE;
 BEGIN
     IF :NEW.close_emp IS NOT NULL THEN
         SELECT emp_type 
@@ -467,7 +467,7 @@ AFTER INSERT OR UPDATE OF resp_type
     ON responsibilities
     FOR EACH ROW
 DECLARE 
-  emp_type_check INTEGER;
+  emp_type_check employees.emp_type%TYPE;
 BEGIN
     IF :NEW.resp_type = 2 THEN
         SELECT emp_type 
@@ -533,11 +533,11 @@ SELECT T.med_tick_id
      , C.cat_name
      , OE.last_name AS open_by_last_name
      , OE.first_name AS open_by_first_name
-     , to_char(T.open_date, 'MM/DD/YYYY') AS open_date
+     , TO_CHAR(T.open_date, 'MM/DD/YYYY') AS open_date
      , T.open_note
      , CE.last_name AS close_by_last_name
      , CE.first_name AS close_by_first_name
-     , to_char(T.close_date, 'MM/DD/YYYY') AS close_date
+     , TO_CHAR(T.close_date, 'MM/DD/YYYY') AS close_date
      , T.close_note
 FROM medical_tickets T
 INNER JOIN animals A
