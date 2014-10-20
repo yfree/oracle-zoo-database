@@ -971,7 +971,6 @@ VALUES (4, 3, 4, 2);
 CREATE OR REPLACE PROCEDURE update_sup 
 IS
     insuffic_stock EXCEPTION;
-    insuffic_stock_msg VARCHAR2(512) DEFAULT 'insufficient stock';
 
     CURSOR sup_exceed_cursor
     IS
@@ -993,7 +992,8 @@ BEGIN
     IF sup_exceed_cursor%FOUND THEN
         RAISE insuffic_stock;
     END IF;
-        
+    CLOSE sup_exceed_cursor;   
+    
     FOR daily_sup_row IN daily_sup_cursor
     LOOP
         UPDATE supplies
@@ -1003,6 +1003,7 @@ BEGIN
     
 EXCEPTION
     WHEN insuffic_stock THEN
-        dbms_output.put_line(insuffic_stock_msg);
+        CLOSE sup_exceed_cursor;
+        RAISE_APPLICATION_ERROR (-20002, 'insufficient stock');
 END;
 /
