@@ -434,8 +434,7 @@ BEGIN
             VALUES (:NEW.anim_id, 2, 10, 2);
 
             INSERT INTO anim_needs (anim_id, sup_id, sup_amount, shift_id)
-            VALUES (:NEW.anim_id, 2, 10, 3);      
-       
+            VALUES (:NEW.anim_id, 2, 10, 3);            
     END CASE;
 END;
 /
@@ -455,7 +454,7 @@ BEGIN
         WHERE emp_id = :NEW.close_emp; 
     
         IF emp_type_check <> 2 THEN
-            RAISE_APPLICATION_ERROR (-20001, 'must be medical employee');
+            RAISE_APPLICATION_ERROR(-20001, 'must be medical employee');
         END IF;
     END IF;
 END;
@@ -476,7 +475,7 @@ BEGIN
         WHERE emp_id = :NEW.emp_id; 
     
         IF emp_type_check <> 2 THEN
-            RAISE_APPLICATION_ERROR (-20001, 'must be medical employee');
+            RAISE_APPLICATION_ERROR(-20001, 'must be medical employee');
         END IF;
     END IF;
 END;
@@ -1004,6 +1003,6 @@ BEGIN
 EXCEPTION
     WHEN insuffic_stock THEN
         CLOSE sup_exceed_cursor;
-        RAISE_APPLICATION_ERROR (-20002, 'insufficient stock');
+        RAISE_APPLICATION_ERROR(-20002, 'insufficient stock');
 END;
 /
