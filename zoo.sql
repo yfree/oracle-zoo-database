@@ -3,7 +3,7 @@
  **********/
      
 CREATE TABLE shifts
-    ( shift_id      NUMBER(8,0)
+    ( shift_id      NUMBER(8)
     , shift_name    VARCHAR2(50)
         CONSTRAINT    shift_shift_name_nn NOT NULL
     , CONSTRAINT    shift_shift_id_pk
@@ -11,7 +11,7 @@ CREATE TABLE shifts
     );
 
 CREATE TABLE zones
-    ( zone_id       NUMBER(8,0)
+    ( zone_id       NUMBER(8)
     , zone_name     VARCHAR2(50)
         CONSTRAINT    zone_zone_name_nn NOT NULL
     , CONSTRAINT    zone_zone_id_pk
@@ -19,7 +19,7 @@ CREATE TABLE zones
     );
 
 CREATE TABLE resp_types
-    ( resp_type_id       NUMBER(2,0)
+    ( resp_type_id       NUMBER(2)
     , resp_type_name     VARCHAR2(50)
         CONSTRAINT    resp_type_resp_type_name_nn NOT NULL
     , CONSTRAINT    resp_type_resp_type_id_pk 
@@ -27,14 +27,14 @@ CREATE TABLE resp_types
     );
 
 CREATE TABLE employees
-    ( emp_id        NUMBER(8,0)
+    ( emp_id        NUMBER(8)
     , first_name    VARCHAR2(50)
         CONSTRAINT    emp_first_name_nn NOT NULL
     , last_name     VARCHAR2(50)
         CONSTRAINT    emp_last_name_nn NOT NULL
-    , emp_type      NUMBER(2,0)
+    , emp_type      NUMBER(2)
         CONSTRAINT    emp_emp_type_nn NOT NULL
-    , manager_id    NUMBER(8,0)
+    , manager_id    NUMBER(8)
     , CONSTRAINT    emp_emp_id_pk 
                       PRIMARY KEY (emp_id)
     , CONSTRAINT    emp_emp_type_fk
@@ -46,7 +46,7 @@ CREATE TABLE employees
     );
 
 CREATE TABLE emp_phones
-    ( emp_id        NUMBER(8,0)
+    ( emp_id        NUMBER(8)
     , phone_no      VARCHAR2(16)
     , CONSTRAINT    emp_phone_pk 
                       PRIMARY KEY (emp_id, phone_no)
@@ -56,14 +56,14 @@ CREATE TABLE emp_phones
     );
 
 CREATE TABLE supplies
-    ( sup_id        NUMBER(8,0)
+    ( sup_id        NUMBER(8)
     , sup_name      VARCHAR2(50)
         CONSTRAINT    sup_sup_name_nn NOT NULL
     , sup_unit      VARCHAR2(10)
         CONSTRAINT    sup_sup_unit_nn NOT NULL
     , total_amount  NUMBER(15,2)
         CONSTRAINT    sup_total_amount_nn NOT NULL
-    , sup_type      NUMBER(8,0)
+    , sup_type      NUMBER(8)
         CONSTRAINT    sup_sup_type_nn NOT NULL
     , admin_route   VARCHAR2(2)
     , CONSTRAINT    sup_sup_unit_chk
@@ -80,10 +80,10 @@ CREATE TABLE supplies
     );
 
 CREATE TABLE anim_categories
-    ( cat_id        NUMBER(8,0)
+    ( cat_id        NUMBER(8)
     , cat_name      VARCHAR2(50)
         CONSTRAINT    anim_cat_cat_name_nn NOT NULL
-    , zone_id       NUMBER(8,0)
+    , zone_id       NUMBER(8)
         CONSTRAINT    anim_cat_zone_id_nn NOT NULL
     , CONSTRAINT    anim_cat_cat_id_pk
                       PRIMARY KEY (cat_id)
@@ -93,10 +93,10 @@ CREATE TABLE anim_categories
     );
 
 CREATE TABLE animals
-    ( anim_id       NUMBER(8,0)
+    ( anim_id       NUMBER(8)
     , anim_name     VARCHAR2(50)
         CONSTRAINT   anim_anim_name_nn NOT NULL
-    , cat_id        NUMBER(8,0)
+    , cat_id        NUMBER(8)
         CONSTRAINT   anim_cat_id_nn NOT NULL
     , gender        CHAR(1)
     , anim_dob      DATE
@@ -111,14 +111,14 @@ CREATE TABLE animals
     );
 
 CREATE TABLE anim_needs
-    ( need_id       NUMBER(8,0)
-    , anim_id       NUMBER(8,0)
+    ( need_id       NUMBER(8)
+    , anim_id       NUMBER(8)
         CONSTRAINT    anim_need_anim_id_nn NOT NULL
-    , sup_id        NUMBER(8,0)
+    , sup_id        NUMBER(8)
         CONSTRAINT    anim_need_sup_id_nn NOT NULL
     , sup_amount    NUMBER(15,2)
         CONSTRAINT    anim_need_sup_amount_nn NOT NULL
-    , shift_id      NUMBER(8,0)
+    , shift_id      NUMBER(8)
         CONSTRAINT   anim_need_shift_id_nn NOT NULL
     , anim_need_note VARCHAR2(4000)
     , CONSTRAINT    anim_need_sup_amount_min
@@ -137,12 +137,12 @@ CREATE TABLE anim_needs
     );
 
 CREATE TABLE medical_tickets
-    ( med_tick_id    NUMBER(8,0)
-    , anim_id        NUMBER(8,0)
+    ( med_tick_id    NUMBER(8)
+    , anim_id        NUMBER(8)
         CONSTRAINT     med_tick_anim_id_nn NOT NULL
-    , open_emp       NUMBER(8,0)
+    , open_emp       NUMBER(8)
         CONSTRAINT     med_tick_open_emp_nn NOT NULL
-    , close_emp      NUMBER(8,0)
+    , close_emp      NUMBER(8)
     , open_date      DATE
         CONSTRAINT     med_tick_open_date_nn NOT NULL
     , close_date     DATE
@@ -164,14 +164,14 @@ CREATE TABLE medical_tickets
     );
    
 CREATE TABLE responsibilities
-    ( resp_id       NUMBER(8,0)
-    , emp_id        NUMBER(8,0)
+    ( resp_id       NUMBER(8)
+    , emp_id        NUMBER(8)
         CONSTRAINT    resp_emp_id_nn NOT NULL
-    , shift_id      NUMBER(8,0)
+    , shift_id      NUMBER(8)
         CONSTRAINT    resp_shift_id_nn NOT NULL
-    , zone_id       NUMBER(8,0)
+    , zone_id       NUMBER(8)
         CONSTRAINT    resp_zone_id_nn NOT NULL
-    , resp_type     NUMBER(8,0)
+    , resp_type     NUMBER(8)
        CONSTRAINT     resp_resp_type_nn NOT NULL
     , CONSTRAINT    resp_resp_id_pk
                       PRIMARY KEY (resp_id)
