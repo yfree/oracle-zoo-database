@@ -251,234 +251,235 @@ NOMAXVALUE;
   ************/
   
 CREATE OR REPLACE TRIGGER shift_before_insert
-BEFORE INSERT 
-    ON shifts
-    FOR EACH ROW
-BEGIN
-    SELECT shift_seq.nextval 
-    into :NEW.shift_id 
-    from dual;
-END;
+    BEFORE INSERT 
+        ON shifts
+        FOR EACH ROW
+
+    BEGIN
+        SELECT shift_seq.nextval 
+        INTO :NEW.shift_id 
+        FROM dual;
+    END;
 /
 
 CREATE OR REPLACE TRIGGER zone_before_insert
-BEFORE INSERT 
-    ON zones
-    FOR EACH ROW
-BEGIN
-    SELECT zone_seq.nextval 
-    into :NEW.zone_id 
-    from dual;
-END;
+    BEFORE INSERT 
+        ON zones
+        FOR EACH ROW
+    BEGIN
+        SELECT zone_seq.nextval 
+        INTO :NEW.zone_id 
+        FROM dual;
+    END;
 /
 
 CREATE OR REPLACE TRIGGER resp_type_before_insert
-BEFORE INSERT 
-    ON resp_types
-    FOR EACH ROW
-BEGIN
-    SELECT resp_type_seq.nextval 
-    INTO :NEW.resp_type_id 
-    FROM dual;
-END;
+    BEFORE INSERT 
+        ON resp_types
+        FOR EACH ROW
+    BEGIN
+        SELECT resp_type_seq.nextval 
+        INTO :NEW.resp_type_id 
+        FROM dual;
+    END;
 /
 
 CREATE OR REPLACE TRIGGER emp_before_insert
-BEFORE INSERT 
-    ON employees
-    FOR EACH ROW
-BEGIN
-    SELECT emp_seq.nextval 
-    INTO :NEW.emp_id 
-    FROM dual;
-END;
+    BEFORE INSERT 
+        ON employees
+        FOR EACH ROW
+    BEGIN
+        SELECT emp_seq.nextval 
+        INTO :NEW.emp_id 
+        FROM dual;
+    END;
 /
 
 CREATE OR REPLACE TRIGGER sup_before_insert
-BEFORE INSERT 
-    ON supplies
-    FOR EACH ROW
-BEGIN
-    SELECT sup_seq.nextval 
-    INTO :NEW.sup_id 
-    FROM dual;
-END;
+    BEFORE INSERT 
+        ON supplies
+        FOR EACH ROW
+    BEGIN
+        SELECT sup_seq.nextval 
+        INTO :NEW.sup_id 
+        FROM dual;
+    END;
 /
 
 CREATE OR REPLACE TRIGGER anim_cat_before_insert
-BEFORE INSERT 
-    ON anim_categories
-    FOR EACH ROW
-BEGIN
-    SELECT anim_cat_seq.nextval 
-    INTO :NEW.cat_id 
-    FROM dual;
-END;
+    BEFORE INSERT 
+        ON anim_categories
+        FOR EACH ROW
+    BEGIN
+        SELECT anim_cat_seq.nextval 
+        INTO :NEW.cat_id 
+        FROM dual;
+    END;
 /
 
 CREATE OR REPLACE TRIGGER anim_before_insert
-BEFORE INSERT 
-    ON animals
-    FOR EACH ROW
-BEGIN
-    SELECT anim_seq.nextval 
-    INTO :NEW.anim_id 
-    FROM dual;
-END;
+    BEFORE INSERT 
+        ON animals
+        FOR EACH ROW
+    BEGIN
+        SELECT anim_seq.nextval 
+        INTO :NEW.anim_id 
+        FROM dual;
+    END;
 /
 
 CREATE OR REPLACE TRIGGER anim_need_before_insert
-BEFORE INSERT 
-    ON anim_needs
-    FOR EACH ROW
-BEGIN
-    SELECT anim_need_seq.nextval 
-    INTO :NEW.need_id 
-    FROM dual;
-END;
+    BEFORE INSERT 
+        ON anim_needs
+        FOR EACH ROW
+    BEGIN
+        SELECT anim_need_seq.nextval 
+        INTO :NEW.need_id 
+        FROM dual;
+    END;
 /
 
 CREATE OR REPLACE TRIGGER med_tick_before_insert
-BEFORE INSERT 
-    ON medical_tickets
-    FOR EACH ROW
-BEGIN
-    SELECT med_tick_seq.nextval 
-    INTO :NEW.med_tick_id 
-    FROM dual;
-END;
+    BEFORE INSERT 
+        ON medical_tickets
+        FOR EACH ROW
+    BEGIN
+        SELECT med_tick_seq.nextval 
+        INTO :NEW.med_tick_id 
+        FROM dual;
+    END;
 /
 
 CREATE OR REPLACE TRIGGER resp_before_insert
-BEFORE INSERT 
-    ON responsibilities
-    FOR EACH ROW
-BEGIN
-    SELECT resp_seq.nextval 
-    INTO :NEW.resp_id 
-    FROM dual;
-END;
+    BEFORE INSERT 
+        ON responsibilities
+        FOR EACH ROW
+    BEGIN
+        SELECT resp_seq.nextval 
+        INTO :NEW.resp_id 
+        FROM dual;
+    END;
 /
 
 -- Add feeding needs when an animal is added based on animal category
 CREATE OR REPLACE TRIGGER anim_after_insert
-AFTER INSERT
-    ON animals
-    FOR EACH ROW
+    AFTER INSERT
+        ON animals
+        FOR EACH ROW
 
-BEGIN
-    CASE :NEW.cat_id
+    BEGIN
+        CASE :NEW.cat_id
 -- lion
-        WHEN 1 THEN
-            INSERT INTO anim_needs (anim_id, sup_id, sup_amount, shift_id)
-            VALUES (:NEW.anim_id, 1, 10, 1);
+            WHEN 1 THEN
+                INSERT INTO anim_needs (anim_id, sup_id, sup_amount, shift_id)
+                VALUES (:NEW.anim_id, 1, 10, 1);
 
-            INSERT INTO anim_needs (anim_id, sup_id, sup_amount, shift_id)
-            VALUES (:NEW.anim_id, 1, 10, 3);
+                INSERT INTO anim_needs (anim_id, sup_id, sup_amount, shift_id)
+                VALUES (:NEW.anim_id, 1, 10, 3);
 -- tiger
-        WHEN 2 THEN
-            INSERT INTO anim_needs (anim_id, sup_id, sup_amount, shift_id)
-            VALUES (:NEW.anim_id, 1, 10, 1);
+            WHEN 2 THEN
+                INSERT INTO anim_needs (anim_id, sup_id, sup_amount, shift_id)
+                VALUES (:NEW.anim_id, 1, 10, 1);
             
-            INSERT INTO anim_needs (anim_id, sup_id, sup_amount, shift_id)
-            VALUES (:NEW.anim_id, 1, 10, 3);  
+                INSERT INTO anim_needs (anim_id, sup_id, sup_amount, shift_id)
+                VALUES (:NEW.anim_id, 1, 10, 3);  
 -- bear 
-        WHEN 3 THEN
-            INSERT INTO anim_needs (anim_id, sup_id, sup_amount, shift_id)
-            VALUES (:NEW.anim_id, 1, 15, 1);
+            WHEN 3 THEN
+                INSERT INTO anim_needs (anim_id, sup_id, sup_amount, shift_id)
+                VALUES (:NEW.anim_id, 1, 15, 1);
             
-            INSERT INTO anim_needs (anim_id, sup_id, sup_amount, shift_id)
-            VALUES (:NEW.anim_id, 1, 15, 2);
+                INSERT INTO anim_needs (anim_id, sup_id, sup_amount, shift_id)
+                VALUES (:NEW.anim_id, 1, 15, 2);
             
-            INSERT INTO anim_needs (anim_id, sup_id, sup_amount, shift_id)
-            VALUES (:NEW.anim_id, 1, 15, 3); 
+                INSERT INTO anim_needs (anim_id, sup_id, sup_amount, shift_id)
+                VALUES (:NEW.anim_id, 1, 15, 3); 
 -- monkey 
-        WHEN 4 THEN
-            INSERT INTO anim_needs (anim_id, sup_id, sup_amount, shift_id)
-            VALUES (:NEW.anim_id, 2, 3, 1);
+            WHEN 4 THEN
+                INSERT INTO anim_needs (anim_id, sup_id, sup_amount, shift_id)
+                VALUES (:NEW.anim_id, 2, 3, 1);
             
-            INSERT INTO anim_needs (anim_id, sup_id, sup_amount, shift_id)
-            VALUES (:NEW.anim_id, 2, 3, 2);
+                INSERT INTO anim_needs (anim_id, sup_id, sup_amount, shift_id)
+                VALUES (:NEW.anim_id, 2, 3, 2);
             
-            INSERT INTO anim_needs (anim_id, sup_id, sup_amount, shift_id)
-            VALUES (:NEW.anim_id, 2, 3, 3);
+                INSERT INTO anim_needs (anim_id, sup_id, sup_amount, shift_id)
+                VALUES (:NEW.anim_id, 2, 3, 3);
 -- zebra 
-        WHEN 5 THEN
-            INSERT INTO anim_needs (anim_id, sup_id, sup_amount, shift_id)
-            VALUES (:NEW.anim_id, 2, 6, 1);
+            WHEN 5 THEN
+                INSERT INTO anim_needs (anim_id, sup_id, sup_amount, shift_id)
+                VALUES (:NEW.anim_id, 2, 6, 1);
             
-            INSERT INTO anim_needs (anim_id, sup_id, sup_amount, shift_id)
-            VALUES (:NEW.anim_id, 2, 6, 2);
+                INSERT INTO anim_needs (anim_id, sup_id, sup_amount, shift_id)
+                VALUES (:NEW.anim_id, 2, 6, 2);
             
-            INSERT INTO anim_needs (anim_id, sup_id, sup_amount, shift_id)
-            VALUES (:NEW.anim_id, 2, 6, 3);   
+                INSERT INTO anim_needs (anim_id, sup_id, sup_amount, shift_id)
+                VALUES (:NEW.anim_id, 2, 6, 3);   
 -- elephant
-        WHEN 6 THEN
-            INSERT INTO anim_needs (anim_id, sup_id, sup_amount, shift_id)
-            VALUES (:NEW.anim_id, 2, 10, 1);
+            WHEN 6 THEN
+                INSERT INTO anim_needs (anim_id, sup_id, sup_amount, shift_id)
+                VALUES (:NEW.anim_id, 2, 10, 1);
 
-            INSERT INTO anim_needs (anim_id, sup_id, sup_amount, shift_id) 
-            VALUES (:NEW.anim_id, 1, 25, 1);
+                INSERT INTO anim_needs (anim_id, sup_id, sup_amount, shift_id) 
+                VALUES (:NEW.anim_id, 1, 25, 1);
             
-            INSERT INTO anim_needs (anim_id, sup_id, sup_amount, shift_id)               
-            VALUES (:NEW.anim_id, 2, 10, 3);
+                INSERT INTO anim_needs (anim_id, sup_id, sup_amount, shift_id)               
+                VALUES (:NEW.anim_id, 2, 10, 3);
 
-            INSERT INTO anim_needs (anim_id, sup_id, sup_amount, shift_id) 
-            VALUES (:NEW.anim_id, 1, 25, 3);
+                INSERT INTO anim_needs (anim_id, sup_id, sup_amount, shift_id) 
+                VALUES (:NEW.anim_id, 1, 25, 3);
 -- gorilla
-        WHEN 7 THEN
-            INSERT INTO anim_needs (anim_id, sup_id, sup_amount, shift_id) 
-            VALUES (:NEW.anim_id, 2, 10, 1);
+            WHEN 7 THEN
+                INSERT INTO anim_needs (anim_id, sup_id, sup_amount, shift_id) 
+                VALUES (:NEW.anim_id, 2, 10, 1);
 
-            INSERT INTO anim_needs (anim_id, sup_id, sup_amount, shift_id) 
-            VALUES (:NEW.anim_id, 2, 10, 2);
+                INSERT INTO anim_needs (anim_id, sup_id, sup_amount, shift_id) 
+                VALUES (:NEW.anim_id, 2, 10, 2);
 
-            INSERT INTO anim_needs (anim_id, sup_id, sup_amount, shift_id)
-            VALUES (:NEW.anim_id, 2, 10, 3);            
-    END CASE;
-END;
+                INSERT INTO anim_needs (anim_id, sup_id, sup_amount, shift_id)
+                VALUES (:NEW.anim_id, 2, 10, 3);            
+        END CASE;
+    END;
 /
 
 -- Prevent a medical ticket from being closed by a non-medical employee
 CREATE OR REPLACE TRIGGER med_tick_after_insert 
-AFTER INSERT OR UPDATE OF close_emp
-    ON medical_tickets
-    FOR EACH ROW
-DECLARE 
-  emp_type_check employees.emp_type%TYPE;
-BEGIN
-    IF :NEW.close_emp IS NOT NULL THEN
-        SELECT emp_type 
-        INTO emp_type_check 
-        FROM employees 
-        WHERE emp_id = :NEW.close_emp; 
+    AFTER INSERT OR UPDATE OF close_emp
+        ON medical_tickets
+        FOR EACH ROW
+    DECLARE 
+      emp_type_check employees.emp_type%TYPE;
+    BEGIN
+        IF :NEW.close_emp IS NOT NULL THEN
+            SELECT emp_type 
+            INTO emp_type_check 
+            FROM employees 
+            WHERE emp_id = :NEW.close_emp; 
     
-        IF emp_type_check <> 2 THEN
-            RAISE_APPLICATION_ERROR(-20001, 'must be medical employee');
+            IF emp_type_check <> 2 THEN
+                RAISE_APPLICATION_ERROR(-20001, 'must be medical employee');
+            END IF;
         END IF;
-    END IF;
-END;
+    END;
 /
 
 -- Prevent non-medical employees from having medical responsibilities
 CREATE OR REPLACE TRIGGER resp_after_insert 
-AFTER INSERT OR UPDATE OF resp_type
-    ON responsibilities
-    FOR EACH ROW
-DECLARE 
-  emp_type_check employees.emp_type%TYPE;
-BEGIN
-    IF :NEW.resp_type = 2 THEN
-        SELECT emp_type 
-        INTO emp_type_check 
-        FROM employees 
-        WHERE emp_id = :NEW.emp_id; 
+    AFTER INSERT OR UPDATE OF resp_type
+        ON responsibilities
+        FOR EACH ROW
+    DECLARE 
+        emp_type_check employees.emp_type%TYPE;
+    BEGIN
+        IF :NEW.resp_type = 2 THEN
+            SELECT emp_type 
+            INTO emp_type_check 
+            FROM employees 
+            WHERE emp_id = :NEW.emp_id; 
     
-        IF emp_type_check <> 2 THEN
-            RAISE_APPLICATION_ERROR(-20001, 'must be medical employee');
+            IF emp_type_check <> 2 THEN
+                RAISE_APPLICATION_ERROR(-20001, 'must be medical employee');
+            END IF;
         END IF;
-    END IF;
-END;
+    END;
 /
  /*********
   * views * 
@@ -487,162 +488,162 @@ END;
 -- List employee phone numbers
 CREATE VIEW emp_phone_v
 AS
-SELECT E.last_name
-     , E.first_name
-     , P.phone_no
-FROM emp_phones P 
-INNER JOIN employees E
-ON P.emp_id = E.emp_id
-ORDER BY E.last_name, E.first_name;
+    SELECT E.last_name
+         , E.first_name
+         , P.phone_no
+    FROM emp_phones P 
+    INNER JOIN employees E
+    ON P.emp_id = E.emp_id
+    ORDER BY E.last_name, E.first_name;
 
 -- List employee information
 CREATE VIEW emp_v
 AS
-SELECT E.last_name
-     , E.first_name
-     , RT.resp_type_name AS emp_type
-     , M.last_name AS m_last_name
-     , M.first_name AS m_first_name
-FROM employees M 
-RIGHT OUTER JOIN employees E
-ON M.emp_id = E.manager_id
-INNER JOIN resp_types RT
-ON E.emp_type = RT.resp_type_id
-ORDER BY E.last_name, E.first_name;
+    SELECT E.last_name
+         , E.first_name
+         , RT.resp_type_name AS emp_type
+         , M.last_name AS m_last_name
+         , M.first_name AS m_first_name
+    FROM employees M 
+    RIGHT OUTER JOIN employees E
+    ON M.emp_id = E.manager_id
+    INNER JOIN resp_types RT
+    ON E.emp_type = RT.resp_type_id
+    ORDER BY E.last_name, E.first_name;
 
 -- List animal information
 CREATE VIEW anim_v
 AS
-SELECT A.anim_name
-     , A.gender
-     , C.cat_name
-     , Z.zone_name
-     , FLOOR(MONTHS_BETWEEN(TRUNC(SYSDATE), A.anim_dob)/12) AS age
-FROM anim_categories C 
-INNER JOIN animals A
-ON C.cat_id = A.cat_id
-INNER JOIN zones Z
-ON C.zone_id = Z.zone_id;
+    SELECT A.anim_name
+         , A.gender
+         , C.cat_name
+         , Z.zone_name
+         , FLOOR(MONTHS_BETWEEN(TRUNC(SYSDATE), A.anim_dob)/12) AS age
+    FROM anim_categories C 
+    INNER JOIN animals A
+    ON C.cat_id = A.cat_id
+    INNER JOIN zones Z
+    ON C.zone_id = Z.zone_id;
 
 -- List medical tickets
 CREATE VIEW med_tick_v
 AS
-SELECT T.med_tick_id
-     , A.anim_name
-     , C.cat_name
-     , OE.last_name AS open_by_last_name
-     , OE.first_name AS open_by_first_name
-     , TO_CHAR(T.open_date, 'MM/DD/YYYY') AS open_date
-     , T.open_note
-     , CE.last_name AS close_by_last_name
-     , CE.first_name AS close_by_first_name
-     , TO_CHAR(T.close_date, 'MM/DD/YYYY') AS close_date
-     , T.close_note
-FROM medical_tickets T
-INNER JOIN animals A
-ON T.anim_id = A.anim_id
-INNER JOIN anim_categories C
-ON A.cat_id = C.cat_id
-INNER JOIN employees OE
-ON T.open_emp = OE.emp_id
-LEFT OUTER JOIN employees CE
-ON T.close_emp = CE.emp_id;
+    SELECT T.med_tick_id
+         , A.anim_name
+         , C.cat_name
+         , OE.last_name AS open_by_last_name
+         , OE.first_name AS open_by_first_name
+         , TO_CHAR(T.open_date, 'MM/DD/YYYY') AS open_date
+         , T.open_note
+         , CE.last_name AS close_by_last_name
+         , CE.first_name AS close_by_first_name
+         , TO_CHAR(T.close_date, 'MM/DD/YYYY') AS close_date
+         , T.close_note
+    FROM medical_tickets T
+    INNER JOIN animals A
+    ON T.anim_id = A.anim_id
+    INNER JOIN anim_categories C
+    ON A.cat_id = C.cat_id
+    INNER JOIN employees OE
+    ON T.open_emp = OE.emp_id
+    LEFT OUTER JOIN employees CE
+    ON T.close_emp = CE.emp_id;
 
 -- List responsibilities
 CREATE VIEW resp_v
 AS
-SELECT S.shift_id
-     , Z.zone_id
-     , S.shift_name
-     , Z.zone_name
-, RT.resp_type_name AS resp_type
-     , E.last_name
-     , E.first_name
-FROM responsibilities R
-INNER JOIN shifts S
-ON R.shift_id = S.shift_id
-INNER JOIN zones Z
-ON R.zone_id = Z.zone_id
-INNER JOIN resp_types RT
-ON R.resp_type = RT.resp_type_id
-INNER JOIN employees E
-ON R.emp_id = E.emp_id
-ORDER BY S.shift_id, Z.zone_id, R.resp_type;
+    SELECT S.shift_id
+         , Z.zone_id
+         , S.shift_name
+         , Z.zone_name
+         , RT.resp_type_name AS resp_type
+         , E.last_name
+         , E.first_name
+    FROM responsibilities R
+    INNER JOIN shifts S
+    ON R.shift_id = S.shift_id
+    INNER JOIN zones Z
+    ON R.zone_id = Z.zone_id
+    INNER JOIN resp_types RT
+    ON R.resp_type = RT.resp_type_id
+    INNER JOIN employees E
+    ON R.emp_id = E.emp_id
+    ORDER BY S.shift_id, Z.zone_id, R.resp_type;
 
 -- List animal needs including the employee responsible for each
 CREATE VIEW anim_need_v
 AS
-SELECT SH.shift_id
-     , Z.zone_id
-     , Sh.shift_name
-     , Z.zone_name   
-     , RT.resp_type_name
-     , A.anim_name
-     , C.cat_name
-     , SU.sup_name
-     , N.sup_amount
-     , SU.sup_unit
-     , N.anim_need_note
-     , E.last_name
-     , E.first_name
-FROM anim_needs N
-INNER JOIN animals A
-ON N.anim_id = A.anim_id
-INNER JOIN anim_categories C
-ON A.cat_id = C.cat_id
-INNER JOIN supplies SU
-ON N.sup_id = SU.sup_id
-INNER JOIN resp_types RT
-ON SU.sup_type = RT.resp_type_id
-INNER JOIN shifts SH
-ON N.shift_id = SH.shift_id
-INNER JOIN zones Z
-ON C.zone_id = Z.zone_id
-LEFT OUTER JOIN responsibilities R
-ON N.shift_id = R.shift_id
-AND C.zone_id = R.zone_id
-AND SU.sup_type = R.resp_type
-LEFT OUTER JOIN employees E
-ON R.emp_id = E.emp_id
-ORDER BY SH.shift_id, Z.zone_id, SU.sup_type;
+    SELECT SH.shift_id
+         , Z.zone_id
+         , Sh.shift_name
+         , Z.zone_name   
+         , RT.resp_type_name
+         , A.anim_name
+         , C.cat_name
+         , SU.sup_name
+         , N.sup_amount
+         , SU.sup_unit
+         , N.anim_need_note
+         , E.last_name
+         , E.first_name
+    FROM anim_needs N
+    INNER JOIN animals A
+    ON N.anim_id = A.anim_id
+    INNER JOIN anim_categories C
+    ON A.cat_id = C.cat_id
+    INNER JOIN supplies SU
+    ON N.sup_id = SU.sup_id
+    INNER JOIN resp_types RT
+    ON SU.sup_type = RT.resp_type_id
+    INNER JOIN shifts SH
+    ON N.shift_id = SH.shift_id
+    INNER JOIN zones Z
+    ON C.zone_id = Z.zone_id
+    LEFT OUTER JOIN responsibilities R
+    ON N.shift_id = R.shift_id
+    AND C.zone_id = R.zone_id
+    AND SU.sup_type = R.resp_type
+    LEFT OUTER JOIN employees E
+    ON R.emp_id = E.emp_id
+    ORDER BY SH.shift_id, Z.zone_id, SU.sup_type;
 
 -- List animal amounts by category
 CREATE VIEW anim_amount_v
 AS
-SELECT C.cat_name As animal_category
-     , COUNT (A.Anim_ID) As amount
-FROM anim_categories C 
-INNER JOIN animals A
-ON C.cat_id = A.cat_id
-GROUP BY C.cat_name
-ORDER BY C.cat_name;
+    SELECT C.cat_name As animal_category
+         , COUNT (A.Anim_ID) As amount
+    FROM anim_categories C 
+    INNER JOIN animals A
+    ON C.cat_id = A.cat_id
+    GROUP BY C.cat_name
+    ORDER BY C.cat_name;
 
 -- List total daily supplies required
 CREATE VIEW daily_sup_req_v
 AS
-SELECT S.sup_id
-     , S.sup_name AS supply
-     , SUM(N.sup_amount) AS amount_required
-     , S.sup_unit AS unit
-FROM supplies S 
-INNER JOIN anim_needs N
-ON S.sup_id = n.sup_id
-GROUP BY S.sup_name, S.sup_id, S.sup_unit
-ORDER BY S.Sup_name;
+    SELECT S.sup_id
+         , S.sup_name AS supply
+         , SUM(N.sup_amount) AS amount_required
+         , S.sup_unit AS unit
+    FROM supplies S 
+    INNER JOIN anim_needs N
+    ON S.sup_id = n.sup_id
+    GROUP BY S.sup_name, S.sup_id, S.sup_unit
+    ORDER BY S.Sup_name;
 
 -- List daily supply needs exceeding current stock
 CREATE VIEW daily_sup_exc_v
 AS
-SELECT S.sup_name AS supply
-    , SUM(N.sup_amount) AS amount_required
-    , S.sup_unit AS unit
-    , S.total_amount AS amount_in_stock
-FROM supplies S 
-INNER JOIN anim_needs N
-ON S.sup_id = N.sup_id
-GROUP BY S.sup_name, S.sup_unit, S.total_amount
-HAVING SUM(N.sup_amount) > S.total_amount
-ORDER BY S.sup_name;
+    SELECT S.sup_name AS supply
+        , SUM(N.sup_amount) AS amount_required
+        , S.sup_unit AS unit
+        , S.total_amount AS amount_in_stock
+    FROM supplies S 
+    INNER JOIN anim_needs N
+    ON S.sup_id = N.sup_id
+    GROUP BY S.sup_name, S.sup_unit, S.total_amount
+    HAVING SUM(N.sup_amount) > S.total_amount
+    ORDER BY S.sup_name;
 
  /***************
   * insert rows * 
@@ -985,24 +986,24 @@ IS
     
     daily_sup_row daily_sup_cursor%ROWTYPE;
         
-BEGIN
-    OPEN sup_exceed_cursor;
-    FETCH sup_exceed_cursor INTO sup_exceed_row;
-    IF sup_exceed_cursor%FOUND THEN
-        RAISE insuffic_stock;
-    END IF;
-    CLOSE sup_exceed_cursor;   
+    BEGIN
+        OPEN sup_exceed_cursor;
+        FETCH sup_exceed_cursor INTO sup_exceed_row;
+        IF sup_exceed_cursor%FOUND THEN
+            RAISE insuffic_stock;
+        END IF;
+        CLOSE sup_exceed_cursor;   
     
-    FOR daily_sup_row IN daily_sup_cursor
-    LOOP
-        UPDATE supplies
-        SET total_amount = total_amount - daily_sup_row.amount_required
-        WHERE sup_id = daily_sup_row.sup_id;
-    END LOOP;
+        FOR daily_sup_row IN daily_sup_cursor
+        LOOP
+            UPDATE supplies
+            SET total_amount = total_amount - daily_sup_row.amount_required
+            WHERE sup_id = daily_sup_row.sup_id;
+        END LOOP;
     
-EXCEPTION
-    WHEN insuffic_stock THEN
-        CLOSE sup_exceed_cursor;
-        RAISE_APPLICATION_ERROR(-20002, 'insufficient stock');
-END;
+    EXCEPTION
+        WHEN insuffic_stock THEN
+            CLOSE sup_exceed_cursor;
+            RAISE_APPLICATION_ERROR(-20002, 'insufficient stock');
+    END;
 /
