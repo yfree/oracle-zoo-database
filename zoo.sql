@@ -972,12 +972,8 @@ CREATE OR REPLACE PROCEDURE update_sup
 IS
     insuffic_stock EXCEPTION;
 
-    CURSOR sup_exceed_cursor
-    IS
-        SELECT supply FROM daily_sup_exc_v;
-    
-    sup_exceed_row sup_exceed_cursor%ROWTYPE;
-    
+    sup_exceed_count PLS_INTEGER;
+
     CURSOR daily_sup_cursor
     IS
         SELECT sup_id
@@ -987,12 +983,11 @@ IS
     daily_sup_row daily_sup_cursor%ROWTYPE;
         
     BEGIN
-        OPEN sup_exceed_cursor;
-        FETCH sup_exceed_cursor INTO sup_exceed_row;
-        IF sup_exceed_cursor%FOUND THEN
+        SELECT COUNT(*) INTO sup_exceed_count FROM daily_sup_exc_v;
+
+        IF sup_exceed_count > 0 THEN
             RAISE insuffic_stock;
-        END IF;
-        CLOSE sup_exceed_cursor;   
+        END IF;  
     
         FOR daily_sup_row IN daily_sup_cursor
         LOOP
@@ -1003,7 +998,6 @@ IS
     
     EXCEPTION
         WHEN insuffic_stock THEN
-            CLOSE sup_exceed_cursor;
             RAISE_APPLICATION_ERROR(-20002, 'insufficient stock');
     END;
 /
