@@ -71,7 +71,7 @@ CREATE TABLE supply
     , CONSTRAINT    sup_sup_total_amount_min
                       CHECK (total_amount >= 0)
     , CONSTRAINT    sup_admin_route_chk
-                      CHECK (admin_route IN('iv','iv','o'))
+                      CHECK (admin_route IN('iv','o'))
     , CONSTRAINT    sup_sup_id_pk
                       PRIMARY KEY (sup_id)
     , CONSTRAINT    sup_sup_type_fk
@@ -254,7 +254,6 @@ CREATE OR REPLACE TRIGGER shift_before_insert
     BEFORE INSERT 
         ON shift
         FOR EACH ROW
-
     BEGIN
         :NEW.shift_id := shift_seq.nextval;
     END;
@@ -265,8 +264,7 @@ CREATE OR REPLACE TRIGGER zone_before_insert
         ON zone
         FOR EACH ROW
     BEGIN  
-        :NEW.zone_id := zone_seq.nextval;
-        
+        :NEW.zone_id := zone_seq.nextval;       
     END;
 /
 
@@ -320,8 +318,7 @@ CREATE OR REPLACE TRIGGER anim_need_before_insert
         ON anim_need
         FOR EACH ROW
     BEGIN  
-        :NEW.need_id := anim_need_seq.nextval;
-        
+        :NEW.need_id := anim_need_seq.nextval;      
     END;
 /
 
