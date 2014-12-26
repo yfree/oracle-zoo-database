@@ -78,7 +78,7 @@ FROM anim_amount_v;
 /*
 List supplies in stock (a view for this isn't needed).
 */
-SELECT * FROM supplies;
+SELECT * FROM supply;
 
 /*
 List animal daily needs including which employees are responsible for each
@@ -154,7 +154,7 @@ SELECT * FROM daily_sup_req_v;
 Set total amount of beef in stock to 2 lbs then get a list of daily requirements
 that exceed what is currently in stock.
 */
-UPDATE supplies
+UPDATE supply
 SET total_amount = 2
 WHERE sup_name = 'Raw Beef';
 
@@ -166,16 +166,16 @@ day. First let's set our supply of raw beef back to 600 lbs because the
 database will not allow us to run the update_sup procedure if our needs
 exceed our supplies.
 */
-UPDATE supplies
+UPDATE supply
 SET total_amount = 600
 WHERE sup_name = 'Raw Beef';
 
 /*
 Let's also view the supply amounts before and after the procedure.
 */
-SELECT * FROM supplies;
+SELECT * FROM supply;
 EXEC update_sup;
-SELECT * FROM supplies;
+SELECT * FROM supply;
 
 /*
 View Sheila the Tiger's medical history.
@@ -201,7 +201,7 @@ Erica Fairline closes Phoebe's medical ticket
 If a non-medical staff member tries to close a ticket with their ID,
 an error will be raised.
 */
-UPDATE medical_tickets
+UPDATE medical_ticket
 SET close_emp = 3
   , close_date = SYSDATE
   , close_note = 'She has a fever, prescribing Anti-Biotics'
@@ -210,11 +210,11 @@ WHERE med_tick_id = 8;
 /*
 Prescribe Phoebe anti-biotics twice daily.
 */
-INSERT INTO anim_needs (anim_id, sup_id, sup_amount, shift_id, anim_need_note)
+INSERT INTO anim_need (anim_id, sup_id, sup_amount, shift_id, anim_need_note)
 VALUES (11, 3, 20, 1, 'Must take between 8 AM and 9 AM.
 To be given up until 2/17/14.');
 
-INSERT INTO anim_needs (anim_id, sup_id, sup_amount, shift_id, anim_need_note)
+INSERT INTO anim_need (anim_id, sup_id, sup_amount, shift_id, anim_need_note)
 VALUES (11, 3, 20, 3, 'Must take between 8 PM and 9 PM.
 To be given up until 2/17/14.');
 
@@ -229,7 +229,7 @@ WHERE anim_name = 'Phoebe';
 /*
 Add a new gorilla named Peter.
 */
-INSERT INTO animals (anim_name, cat_id, gender, anim_dob)
+INSERT INTO animal (anim_name, cat_id, gender, anim_dob)
 VALUES ('Peter', 7, 'm', DATE '2009-04-04');
 
 /* 
@@ -245,7 +245,7 @@ WHERE anim_name = 'Peter';
 If we remove the responsibility record for morning shift, south zone, 
 non-medical...
 */
-DELETE FROM responsibilities
+DELETE FROM responsibility
 WHERE shift_id = 1 AND zone_id = 2 AND resp_type = 1;
 
 /*
@@ -265,7 +265,7 @@ AND resp_type_name = 'non-medical';
 In order to fix this, let's assign Trisha Martens to morning shift, south zone,
 non medical.
 */
-INSERT INTO responsibilities (emp_id, shift_id, zone_id, resp_type)
+INSERT INTO responsibility (emp_id, shift_id, zone_id, resp_type)
 VALUES (10, 1, 2, 1);
 
 /* 
