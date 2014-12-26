@@ -345,7 +345,6 @@ CREATE OR REPLACE TRIGGER anim_after_insert
     AFTER INSERT
         ON animal
         FOR EACH ROW
-
     BEGIN
         CASE :NEW.cat_id
 -- lion
